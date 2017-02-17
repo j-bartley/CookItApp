@@ -1,0 +1,59 @@
+*----* Create Table Scripts *----*
+create table User(
+userID int not null auto_increment,
+userName varchar(50),
+userLocation varchar(50),
+userIsAdmin numeric (2, 2) not null,
+primary key(userID)) engine=innodb;
+
+create table Recipe(
+recipeID int not null auto_increment,
+recipeTitle varchar(50),
+recipeDescription varchar(100),
+recipeOrigin varchar(50),
+recipeCategory varchar(25),
+recipeRating numeric(0, 5) not null,
+primary key(recipeID)) engine =innodb;
+
+create table Step(
+stepID int not null auto_increment,
+stepTitle varchar(50),
+stepDescription varchar(100),
+stepPrepTime numeric(2, 2) not null,
+foreign key (recipeID)
+primary key(stepID)) engine=innodb;
+
+create table Ingredient(
+ingredientID int not null auto_increment,
+ingredientTitle varchar(50),
+ingredientMeasurement varchar(50),
+foreign key(stepID),
+primary key(ingredientID)) engine=innodb;
+
+create table RecipeUser(
+userID int not null,
+recipeID int not null,
+userAccess numeric(2, 2) not null,
+userFavorite numeric(2, 2) not null,
+userComment varchar(100),
+primary key(userID, recipeID)) engine=innodb;
+
+*----* Insert Into Table Scripts *----*
+insert into User(userID, userName, userLocation, userIsAdmin) values
+(null, 'Jordan Bartley', 'Austin, Texas', 1),
+(null, 'Thomas Muller', 'Munich, Bayern, Germany', 0),
+(null, 'Paul Pogba', 'Paris, France', 0);
+
+insert into Recipe(recipeID, recipeTitle, recipeDescription, recipeOrigin, recipeCategory, recipeRating) values
+(null, 'Spaghetti', 'A meatsauce with noodles.', 'Italy', 'Italian', 5),
+(null, 'Hamburger', 'A meat patty with a breaded roll and toppings.', 'N/A', 'Grill Food', 4),
+(null, 'Fish Tacos', 'Two fish filets served in corn tortillas.', 'N/A', 'Mexican', 5);
+
+insert into Step(stepID, stepTitle, stepDescription, stepPrepTime, recipeID) values
+(null, 'Preparation', 'Start water to boil on the stove for noodles.', 12, 1);
+
+insert into Ingredient(ingredientID, ingredientTitle, ingredientMeasurement) values
+(null, 'Spaghetti Noodles', '1 box of store-bought dried spaghetti noodles', 1);
+
+insert into RecipeUser(userID, recipeID, userAccess, userFavorite, userComment) values
+(1, 1, 1, 1, 'I love making this spaghetti recipe');
