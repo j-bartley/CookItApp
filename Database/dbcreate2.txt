@@ -3,7 +3,7 @@ create table User(
 userID int not null auto_increment,
 userName varchar(50),
 userLocation varchar(50),
-userIsAdmin numeric (2, 2) not null,
+userIsAdmin int not null,
 primary key(userID)) engine=innodb;
 
 create table Recipe(
@@ -12,42 +12,46 @@ recipeTitle varchar(50),
 recipeDescription varchar(100),
 recipeOrigin varchar(50),
 recipeCategory varchar(25),
-recipeRating numeric(0, 5) not null,
+recipeRating int not null,
 primary key(recipeID)) engine =innodb;
 
 create table Step(
 stepID int not null auto_increment,
 stepTitle varchar(50),
 stepDescription varchar(100),
-stepPrepTime numeric(2, 2) not null,
-foreign key (recipeID)
+stepPrepTime int not null,
+recipeID int not null,
+foreign key (recipeID) references Recipe(recipeID),
 primary key(stepID)) engine=innodb;
 
 create table Ingredient(
 ingredientID int not null auto_increment,
 ingredientTitle varchar(50),
 ingredientMeasurement varchar(50),
-foreign key(stepID),
+stepID int not null,
+foreign key(stepID) references Step(stepID),
 primary key(ingredientID)) engine=innodb;
 
 create table RecipeUser(
 userID int not null,
 recipeID int not null,
-userAccess numeric(2, 2) not null,
-userFavorite numeric(2, 2) not null,
+userAccess int not null,
+userFavorite int not null,
 userComment varchar(100),
+foreign key(userID) references User(userID),
+foreign key(recipeID) references Recipe(recipeID),
 primary key(userID, recipeID)) engine=innodb;
 
 *----* Insert Into Table Scripts *----*
 insert into User(userID, userName, userLocation, userIsAdmin) values
 (null, 'Jordan Bartley', 'Austin, Texas', 1),
-(null, 'Thomas Muller', 'Munich, Bayern, Germany', 0),
+(null, 'Thomas Muller', 'Munich, Germany', 0),
 (null, 'Paul Pogba', 'Paris, France', 0);
 
 insert into Recipe(recipeID, recipeTitle, recipeDescription, recipeOrigin, recipeCategory, recipeRating) values
 (null, 'Spaghetti', 'A meatsauce with noodles.', 'Italy', 'Italian', 5),
-(null, 'Hamburger', 'A meat patty with a breaded roll and toppings.', 'N/A', 'Grill Food', 4),
-(null, 'Fish Tacos', 'Two fish filets served in corn tortillas.', 'N/A', 'Mexican', 5);
+(null, 'Hamburger', 'A meat patty with a breaded roll and toppings.', ‘United States of America’, 'Grill Food', 4),
+(null, 'Fish Tacos', 'Two fish filets served in corn tortillas.', ‘Mexico’, 'Mexican', 5);
 
 insert into Step(stepID, stepTitle, stepDescription, stepPrepTime, recipeID) values
 (null, 'Preparation', 'Start water to boil on the stove for noodles.', 12, 1);
